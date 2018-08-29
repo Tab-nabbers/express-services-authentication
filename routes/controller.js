@@ -99,7 +99,15 @@ const signIn = async (req, res) => {
 };
 
 
+const home = (req, res) => {
+    re.json({
+        message: 'Welcome to my Page'
+    });
+};
+
+
 module.exports = {
     signUp,
-    signIn
+    signIn,
+    home
 };
