@@ -100,7 +100,7 @@ const signIn = async (req, res) => {
 
 
 const home = (req, res) => {
-    re.json({
+    res.json({
         message: 'Welcome to my Page'
     });
 };

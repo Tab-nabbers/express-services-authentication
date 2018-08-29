@@ -5,7 +5,7 @@ const router = express.Router();
 const controller = require('./controller');
 
 // Route
-router.post('/', controller.home);
+router.get('/', controller.home);
 router.post('/signup', controller.signUp);
 router.post('/signin', controller.signIn);
 
