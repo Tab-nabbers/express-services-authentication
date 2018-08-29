@@ -8,7 +8,13 @@ const bodyParser = require('body-parser')
 const PORT = process.env.PORT || 9000;
 
 mongoose.set('useCreateIndex', true);
-mongoose.connect('mongodb://localhost/tabnabbers', { useNewUrlParser: true });
+
+if (process.env.NODE_ENV === 'production') {
+    mongoose.connect('mongodb://accimeesterlin:Septembre1@ds111622.mlab.com:11622/tabnabbers-dev', { useNewUrlParser: true });
+} else {
+    mongoose.connect('mongodb://localhost/tabnabbers', { useNewUrlParser: true });
+
+}
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
