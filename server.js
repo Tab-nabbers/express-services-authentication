@@ -2,8 +2,9 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const routes = require('./routes/handlers');
-const cookieParser = require('cookie-parser')
-const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const PORT = process.env.PORT || 9000;
 
@@ -16,6 +17,7 @@ if (process.env.NODE_ENV === 'production') {
 
 }
 
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
