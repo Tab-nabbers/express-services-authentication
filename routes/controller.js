@@ -7,11 +7,11 @@ const jwt = require('jsonwebtoken');
 const signUp = (req, res) => {
 
     if (!req.body.email) {
-        return res.json({ message: 'No email provided' });
+        return res.status(401).json({ message: 'No email provided' });
     }
 
     if (!req.body.password) {
-        return res.json({ message: 'No username provided' });
+        return res.status(401).json({ message: 'No username provided' });
     }
 
     const email = req.body.email;
@@ -41,7 +41,7 @@ const signUp = (req, res) => {
             });
         })
         .catch((error) => {
-            res.json({
+            res.status(500).json({
                 message: error.errmsg,
                 ...error
             })
