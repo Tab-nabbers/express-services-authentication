@@ -4,6 +4,7 @@ const salt = bcrypt.genSaltSync(10);
 const jwt = require('jsonwebtoken');
 
 
+
 const signUp = (req, res) => {
 
     if (!req.body.email) {
@@ -42,7 +43,7 @@ const signUp = (req, res) => {
         })
         .catch((error) => {
             res.status(500).json({
-                message: error.errmsg,
+                message: 'User already exist, try a different user',
                 ...error
             })
         });
@@ -106,8 +107,30 @@ const home = (req, res) => {
 };
 
 
+const findUserProfileByIdAndEmail = (req, res) => {
+    const id = req.id;
+    const email = req.email;
+
+    User.findOne({
+        _id: id,
+        email
+    })
+        .select('-password')
+        .then((user) => {
+            res.json({ user });
+        })
+        .catch((err) => {
+            res.status(500).json({
+                message: 'No user found',
+                err
+            });
+        })
+};
+
+
 module.exports = {
     signUp,
     signIn,
-    home
+    home,
+    findUserProfileByIdAndEmail
 };
