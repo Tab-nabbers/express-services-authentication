@@ -14,7 +14,11 @@ const UserSchema = Schema({
         type: String,
         unique: true,
         required : true
-    }
+    },
+    username: String,
+    location: String,
+    bio: String,
+    portfolio: String
 }, { timestamps: { createdAt: 'created_at' }, strict: true });
 
 

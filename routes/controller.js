@@ -128,9 +128,34 @@ const findUserProfileByIdAndEmail = (req, res) => {
 };
 
 
+
+const save = (req, res) => {
+
+    let obj = {};
+    const id = req.id;
+    const keyValidations = ['location', 'username', 'bio', 'portfolio'];
+
+    for (let key in req.body) {
+        if (keyValidations.includes(key)) {
+            obj[key] = req.body[key]
+        }
+    }
+
+    User.findOneAndUpdate({ _id: id }, obj, (err, docs) => {
+        if (!err) {
+            return res.json({ message: 'Data successfully saved!' });
+        }
+        return res.status(500).json({
+            message: 'Internal Error'
+        });
+    })
+}
+
+
 module.exports = {
     signUp,
     signIn,
     home,
-    findUserProfileByIdAndEmail
+    findUserProfileByIdAndEmail,
+    save
 };
