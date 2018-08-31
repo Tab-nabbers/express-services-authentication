@@ -36,6 +36,7 @@ const signUp = (req, res) => {
 
             res.cookie('token', token).json({
                 email,
+                token,
                 message: 'User Created',
                 createdAt: result.created_at,
                 updatedAt: result.updatedAt,
@@ -55,11 +56,11 @@ const signIn = async (req, res) => {
 
     try {
         if (!req.body.email) {
-            return res.json({ message: 'No Email provided' });
+            return res.status(401).json({ message: 'No Email provided' });
         }
 
         if (!req.body.password) {
-            return res.json({ message: 'No password provided' });
+            return res.status(401).json({ message: 'No password provided' });
         }
         const { email, password } = req.body;
         const result = await User.findOne({ email });
@@ -81,6 +82,7 @@ const signIn = async (req, res) => {
 
             return res.cookie('token', token).json({
                 email,
+                token,
                 uuid: result._id,
                 createdAt: result.created_at,
                 updatedAt: result.updatedAt

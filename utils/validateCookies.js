@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const validateCookies = (req, res, next) => {
-    const token = req.cookies.token;
+    const token = req.headers['x-tab-token'];
     jwt.verify(token, 'authenticateuser', function (err, decoded) {
         if (err) {
             res.status(401).json({
