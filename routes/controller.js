@@ -8,11 +8,11 @@ const jwt = require('jsonwebtoken');
 const signUp = (req, res) => {
 
     if (!req.body.email) {
-        return res.status(401).json({ message: 'No email provided' });
+        return res.status(401).json({ message: 'No email provided', isAuthenticated: false });
     }
 
     if (!req.body.password) {
-        return res.status(401).json({ message: 'No username provided' });
+        return res.status(401).json({ message: 'No username provided', isAuthenticated: false });
     }
 
     const email = req.body.email;
@@ -40,12 +40,14 @@ const signUp = (req, res) => {
                 message: 'User Created',
                 createdAt: result.created_at,
                 updatedAt: result.updatedAt,
+                isAuthenticated: true
             });
         })
         .catch((error) => {
             res.status(500).json({
                 message: 'User already exist, try a different user',
-                ...error
+                ...error,
+                isAuthenticated: false
             })
         });
 
@@ -56,11 +58,11 @@ const signIn = async (req, res) => {
 
     try {
         if (!req.body.email) {
-            return res.status(401).json({ message: 'No Email provided' });
+            return res.status(401).json({ message: 'No Email provided', isAuthenticated: false });
         }
 
         if (!req.body.password) {
-            return res.status(401).json({ message: 'No password provided' });
+            return res.status(401).json({ message: 'No password provided', isAuthenticated: false });
         }
         const { email, password } = req.body;
         const result = await User.findOne({ email });
@@ -68,7 +70,7 @@ const signIn = async (req, res) => {
 
         // No User found
         if (!result) {
-            return res.status(401).json({ message: 'No user found!' });
+            return res.status(401).json({ message: 'No user found!', isAuthenticated: false });
         }
 
         // Check password
@@ -85,18 +87,21 @@ const signIn = async (req, res) => {
                 token,
                 uuid: result._id,
                 createdAt: result.created_at,
-                updatedAt: result.updatedAt
+                updatedAt: result.updatedAt,
+                isAuthenticated: true
             });
         }
 
         // Password doesn't not match
         res.status(401).json({
-            message: 'Password or email is wrong'
+            message: 'Password or email is wrong',
+            isAuthenticated: false
         });
 
     } catch (error) {
         res.status(500).json({
-            message: 'No user found!'
+            message: 'No user found!',
+            isAuthenticated: false
         });
     }
 };
@@ -135,7 +140,16 @@ const save = (req, res) => {
 
     let obj = {};
     const id = req.id;
-    const keyValidations = ['location', 'username', 'bio', 'portfolio'];
+    const keyValidations = [
+        'location',
+        'username',
+        'bio',
+        'website',
+        'githubId',
+        'hireable',
+        'githubUsername',
+        'picture'
+    ];
 
     for (let key in req.body) {
         if (keyValidations.includes(key)) {

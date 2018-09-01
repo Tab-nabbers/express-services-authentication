@@ -14,10 +14,13 @@ const UserSchema = Schema({
         unique: true,
         required : true
     },
-    username: String,
     location: String,
     bio: String,
-    portfolio: String
+    githubUsername: String,
+    picture: String,
+    website: String,
+    githubId: Number,
+    hireable: Number
 }, { timestamps: { createdAt: 'created_at' }, strict: true });
 
 
